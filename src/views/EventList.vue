@@ -4,7 +4,7 @@
   <div class="flex justify-center">
     <div class="home space-y-4">
       <EventCard
-        class="px-20 max-w-md"
+        class="px-20 max-w-4xl"
         v-for="event in events"
         :key="event.id"
         :event="event"
@@ -15,6 +15,7 @@
 
 <script>
 import EventCard from "@/components/EventCard.vue";
+import axios from "axios";
 
 export default {
   name: "EventList",
@@ -24,43 +25,23 @@ export default {
 
   data() {
     return {
-      events: [
-        {
-          id: 1,
-          category: "animal walfare",
-          title: "Cat Adoption Day",
-          description: "Find your new feline friend at this event",
-          location: "Meow Town",
-          date: "January 28, 2023",
-          time: "12:00",
-          petsallowed: true,
-          organizer: "Ammar",
-        },
-        {
-          id: 2,
-          category: "sport",
-          title: "Tennis Tournament",
-          description:
-            "Participate in this tournament to have a chance fight against Novak Djokovic",
-          location: "Sport Town",
-          date: "January 1, 2023",
-          time: "12:00",
-          petsallowed: true,
-          organizer: "Ammar",
-        },
-        {
-          id: 3,
-          category: "food",
-          title: "Community Gardening",
-          description: "Join us to tend community edible plants 420",
-          location: "Edibles Town",
-          date: "February 10, 2023",
-          time: "12:00",
-          petsallowed: true,
-          organizer: "Ammar",
-        },
-      ],
+      events: null,
     };
+  },
+
+  props: ["id"],
+
+  created() {
+    axios
+      .get(
+        "https://my-json-server.typicode.com/Code-Pop/Real-World_Vue-3/events"
+      )
+      .then((response) => {
+        this.events = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 };
 </script>
